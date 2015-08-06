@@ -3,15 +3,16 @@
 # ~~~~
 
 # Home page
-GET         /                     controllers.Application.index
-POST        /import/rankings               controllers.Application.importRankings
-POST        /import/matches               controllers.Application.importMatches
+GET         /                       controllers.Application.index
+POST        /import/rankings        controllers.Application.importRankings
+POST        /import/matches         controllers.Application.importMatches
 
-GET         /rankings             controllers.Application.rankings
-GET         /matches              controllers.Application.matches(div = "1")
-GET         /matches/:div         controllers.Application.matches(div: String)
+GET         /rankings               controllers.Application.rankings(div = "1")
+GET         /rankings/:div          controllers.Application.rankings(div: String)
+GET         /matches                controllers.Application.matches(div = "1")
+GET         /matches/:div           controllers.Application.matches(div: String)
 
 
 # Map static resources from the /public folder to the /assets URL path
-GET         /assets/*file         controllers.Assets.versioned(path="/public", file: Asset)
-GET         /webjars/*file        controllers.WebJarAssets.at(file)
+GET         /assets/*file           controllers.Assets.versioned(path="/public", file: Asset)
+GET         /webjars/*file          controllers.WebJarAssets.at(file)

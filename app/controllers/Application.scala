@@ -87,9 +87,9 @@ class Application extends Controller {
   }
 
 
-  def rankings = Action {
+  def rankings(div: String = "1") = Action {
     implicit request =>
-      Ok(Json.toJson(Ranking.findAll()))
+      Ok(Json.toJson(Ranking.find(div = div)))
   }
 
   def matches(div: String = "1") = Action {

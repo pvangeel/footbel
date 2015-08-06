@@ -22,10 +22,25 @@
                 });
 
             };
+        }).directive('ranking', function ($http) {
+        return {
+          restrict: 'EA',
+          scope: {
+            division: '@@division'
+          },
+          templateUrl: 'assets/templates/ranking.tpl.html',
+          controller: function ($scope) {
+            $scope.rankings = [];
 
+            $http.get('/rankings/' + $scope.division)
+              .then(function (response) {
+                $scope.rankings = response.data;
+                $scope.ready = true;
+              });
+          }
+        }
 
-
-        });
+      });
 
         $(function() {
             angular.bootstrap(document, ['footbel']);
@@ -34,7 +49,6 @@
     </script>
 
         <div class="container" ng-controller="mainController">
-
 
             <div class="row">
 
@@ -60,8 +74,17 @@
 
                 </div>
             </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <h2>Ranking division 1</h2>
+                    <ranking division="1"></ranking>
+
+                    <h2>Ranking division 2</h2>
+                    <ranking division="2"></ranking>
+                </div>
+
+            </div>
 
         </div>
-
 
     }
