@@ -29,7 +29,8 @@ class Application extends Controller {
       } getOrElse Iterator.empty
   }
 
-  def importdata2 = Action.async {
+  def importRankings = Action.async {
+    val begin = System.currentTimeMillis
     val url = "http://static.belgianfootball.be/project/publiek/download/natcltdownP.zip"
 
     WSUtil.urlToTempFile(url).map(zippedFileToCsvLines).map {
@@ -51,13 +52,13 @@ class Application extends Controller {
             )
         }
         Ranking.createBatch(rankings.toSeq)
-        Ok
+        Ok(Json.toJson(System.currentTimeMillis - begin))
     }
   }
 
-  def importdata = Action.async {
+  def importMatches = Action.async {
+    val begin = System.currentTimeMillis
     val url = "http://static.belgianfootball.be/project/publiek/download/natresdownP.zip"
-
     WSUtil.urlToTempFile(url).map(zippedFileToCsvLines).map {
       lines =>
         val matches = lines.drop(1).map(_.split(";")).map {
@@ -81,7 +82,7 @@ class Application extends Controller {
         }
         Match.createBatch(matches.toSeq)
 
-        Ok
+        Ok(Json.toJson(System.currentTimeMillis - begin))
     }
   }
 
@@ -91,9 +92,10 @@ class Application extends Controller {
       Ok(Json.toJson(Ranking.findAll()))
   }
 
-  def matches = Action {
+  def matches(div: String = "1") = Action {
     implicit request =>
-      Ok(Json.toJson(Match.findAll()))
+      import models.Match._
+      Ok(Json.toJson(Match.find(div = div)))
   }
 
 }

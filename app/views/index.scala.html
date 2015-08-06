@@ -1,10 +1,67 @@
 @(message: String)
 
-@main("Welcome to Play") {
+    @main("Welcome to Play") {
 
 
-    <form method="POST" action="/import">
-        <button type="submit">Import data</button>
-    </form>
+        <script>
+        angular.module('footbel', ['ui.bootstrap'])
+        .controller('mainController', function($scope, $http) {
+            delete $scope.alert;
+            $scope.importing = {};
 
-}
+            $scope.import = function(type) {
+                $scope.importing[type] = true;
+
+                $http.post('/import/' + type).then(function(response) {
+                    $scope.alert = {
+                        time: response.data,
+                        type: type
+                    };
+                    $scope.importing[type] = false;
+
+                });
+
+            };
+
+
+
+        });
+
+        $(function() {
+            angular.bootstrap(document, ['footbel']);
+        });
+
+    </script>
+
+        <div class="container" ng-controller="mainController">
+
+
+            <div class="row">
+
+                <div class="col-md-12">
+                    <h2>FootBel</h2>
+
+                    <div class="alert alert-success" role="alert" ng-show="alert">
+                        <span ng-bind="'Importing ' + alert.type + ' took: ' + alert.time +'ms'"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <button class="btn btn-default" ng-click="import('rankings')" ng-disabled="importing['rankings']">
+                            <i class="fa fa-circle-o-notch fa-spin" ng-show="importing['rankings']"></i>
+                            Import rankings
+                        </button>
+                    </div>
+                    <div class="form-group">
+                        <button class="btn btn-default" ng-click="import('matches')" ng-disabled="importing['matches']">
+                            <i class="fa fa-circle-o-notch fa-spin" ng-show="importing['matches']"></i>
+                            Import matches
+                        </button>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+
+    }

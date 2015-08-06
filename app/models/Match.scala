@@ -24,9 +24,24 @@ case class Match(
 
 object Match {
 
-  val parser = str("home") map { case home => home}
+  implicit val matchReads = Json.reads[Match]
+  implicit val matchWrites = Json.writes[Match]
 
-  implicit val rankingWrites = Json.reads[Match]
+  val parser = str("div") ~
+      get[DateTime]("dateTime") ~
+      str("home") ~
+      str("away") ~
+      get[Option[Long]]("rh") ~
+      get[Option[Long]]("ra") ~
+      str("status") ~
+      long("md") ~
+      long("regnumberhome") ~
+      long("regnumberaway") ~
+      get[Option[Long]]("id") map {
+    case div ~ dateTime ~ home ~ away ~ rh ~ ra ~ status ~ md ~ regnumberhome ~ regnumberaway ~ id =>
+      Match(div, dateTime, home, away, rh, ra, status, md, regnumberhome, regnumberaway, id)
+  }
+
 
   def createBatch(matches: Seq[Match]) = DB.withConnection {
     implicit connection =>
@@ -57,4 +72,13 @@ object Match {
       SQL("select * from matches").as(parser *)
   }
 
+  def find(div: String) = DB.withConnection {
+    implicit connection =>
+      SQL("select * from matches where div = {div}")
+        .on('div -> div)
+        .as(parser *)
+  }
+
 }
+
+
