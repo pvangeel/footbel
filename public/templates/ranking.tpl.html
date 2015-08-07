@@ -5,29 +5,29 @@
 
 <table class="table table-striped" ng-show="ready">
     <thead>
-    <th>Pos</th>
-    <th>Team</th>
-    <th>G</th>
-    <th>W</th>
-    <th>D</th>
-    <th>L</th>
-    <th>Goals+</th>
-    <th>Goals-</th>
-    <th>Saldo</th>
-    <th>Ptn</th>
-    </thead>
+        <th>Pos</th>
+        <th>Team</th>
+        <th>G</th>
+        <th>W</th>
+        <th>D</th>
+        <th>L</th>
+        <th>Goals+</th>
+        <th>Goals-</th>
+        <th>Saldo</th>
+        <th>Ptn</th>
+        </thead>
     <tbody>
-    <tr ng-repeat="ranking in rankings | orderBy:'pos'">
-        <td ng-bind="ranking.pos"></td>
-        <td ng-bind="ranking.team"></td>
-        <td ng-bind="ranking.matches"></td>
-        <td ng-bind="ranking.wins"></td>
-        <td ng-bind="ranking.draws"></td>
-        <td ng-bind="ranking.losses"></td>
-        <td ng-bind="ranking.goalsPlus"></td>
-        <td ng-bind="ranking.goalsMin"></td>
-        <td ng-bind="ranking.goalsDiff"></td>
-        <td ng-bind="ranking.points"></td>
-    </tr>
+        <tr ng-repeat="ranking in rankings | orderBy:'pos'">
+            <td ng-bind="ranking.pos"></td>
+            <td ng-bind="ranking.team"></td>
+            <td ng-bind="ranking.matches"></td>
+            <td ng-bind="ranking.wins"></td>
+            <td ng-bind="ranking.draws"></td>
+            <td ng-bind="ranking.losses"></td>
+            <td ng-bind="ranking.goalsPlus"></td>
+            <td ng-bind="ranking.goalsMin"></td>
+            <td ng-bind="ranking.goalsDiff"></td>
+            <td ng-bind="ranking.points"></td>
+        </tr>
     </tbody>
 </table>
